@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💘 Valentine’s journey · long distance love 💘</title>
+  <!-- Google fonts: romantic mix -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome for extra icons (optional) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #2c0a1e 0%, #4a1f3a 45%, #702f4e 100%);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      margin: 0;
+      color: #fff9f0;
+    }
+
+    /* main container with pages stack */
+    .story-container {
+      position: relative;
+      width: 100%;
+      max-width: 750px;
+      min-height: 600px;
+      background: rgba(255, 240, 245, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 48px 48px 32px 32px;
+      box-shadow: 0 30px 50px rgba(180, 40, 100, 0.5), 0 0 0 2px #ffd9e6 inset;
+      padding: 2rem 1.8rem;
+      overflow: hidden;
+    }
+
+    /* pages are stacked absolutely, fade transition */
+    .page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 2rem 1.8rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.7s ease, visibility 0.7s;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .page.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+    }
+
+    /* splash specific – floating emojis container */
+    .splash-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .floating-emojis {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .float-emoji {
+      position: absolute;
+      font-size: 2.2rem;
+      filter: drop-shadow(0 8px 12px #ffa5c3);
+      animation: floatAround 8s infinite alternate ease-in-out;
+      opacity: 0.9;
+    }
+
+    /* flower top for message pages */
+    .flower-top {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.8rem;
+      padding: 0.8rem 0;
+    }
+
+    .flower-top span {
+      font-size: 2.8rem;
+      display: inline-block;
+      animation: gentleFloat 4s infinite alternate;
+      filter: drop-shadow(0 10px 15px #f9b8d0);
+    }
+
+    .flower-top span:nth-child(2) { animation-delay: 0.7s; }
+    .flower-top span:nth-child(3) { animation-delay: 1.3s; }
+    .flower-top span:nth-child(4) { animation-delay: 0.3s; }
+    .flower-top span:nth-child(5) { animation-delay: 1.9s; }
+
+    /* message text styles */
+    .message {
+      font-family: 'Playfair Display', serif;
+      line-height: 1.6;
+      color: #fffbee;
+      text-shadow: 2px 2px 10px #d1477b;
+    }
+
+    .romantic-heading {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.6rem;
+      color: #fbe4d0;
+      margin-bottom: 0.5rem;
+    }
+
+    .pacifico-line {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: #fee2b5;
+    }
+
+    .poppins-body {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 300;
+      font-size: 1.1rem;
+    }
+
+    .highlight-pink {
+      color: #ffb3c6;
+      font-weight: 600;
+      font-size: 1.3rem;
+      display: inline-block;
+      animation: pulseSoft 2s infinite;
+    }
+
+    .highlight-gold {
+      color: #fccf7c;
+      font-weight: bold;
+      text-shadow: 0 0 5px gold;
+    }
+
+    .big-emoji {
+      font-size: 2rem;
+      margin: 0 0.2rem;
+    }
+
+    /* input & buttons */
+    .lock-input {
+      background: rgba(255, 220, 240, 0.2);
+      border: 2px solid #ffacc7;
+      border-radius: 60px;
+      padding: 1rem 1.8rem;
+      font-size: 1.3rem;
+      width: 80%;
+      max-width: 350px;
+      color: #ffecf0;
+      text-align: center;
+      outline: none;
+      backdrop-filter: blur(4px);
+      margin: 1rem 0 0.8rem;
+      font-family: 'Pacifico', cursive;
+    }
+
+    .lock-input::placeholder {
+      color: #ffbfd5;
+      font-size: 1rem;
+    }
+
+    .btn {
+      background: linear-gradient(145deg, #ff80a5, #d63c6c);
+      border: none;
+      border-radius: 60px;
+      padding: 0.8rem 2rem;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff0f3;
+      box-shadow: 0 10px 20px #b32b5e;
+      cursor: pointer;
+      transition: 0.2s;
+      margin: 0.5rem 0;
+      font-family: 'Playfair Display', serif;
+      border: 1px solid #ffdfe7;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(145deg, #ff99bb, #e64d7e);
+      box-shadow: 0 15px 25px #9f2350;
+    }
+
+    .btn-next {
+      background: linear-gradient(145deg, #c67f9e, #a34e74);
+      font-size: 1.5rem;
+      padding: 0.6rem 2.2rem;
+      margin-top: 2rem;
+      align-self: center;
+    }
+
+    .error-message {
+      color: #ffcedd;
+      font-size: 1.1rem;
+      min-height: 2.5rem;
+      font-family: 'Great Vibes', cursive;
+    }
+
+    /* music area */
+    .music-area {
+      margin: 2rem 0 0.5rem;
+      text-align: center;
+    }
+    .player-button {
+      background: #ffacc7;
+      border: none;
+      border-radius: 60px;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      color: #33001a;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #962b55;
+      transition: 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .player-button:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #962b55;
+    }
+    .player-button i {
+      font-size: 1.8rem;
+    }
+
+    /* keyframe animations */
+    @keyframes floatAround {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      100% { transform: translate(30px, -30px) rotate(15deg) scale(1.2); }
+    }
+    @keyframes gentleFloat {
+      0% { transform: translateY(0px) rotate(-2deg); }
+      100% { transform: translateY(-15px) rotate(3deg); }
+    }
+    @keyframes pulseSoft {
+      0% { opacity: 1; text-shadow: 0 0 3px pink; }
+      50% { opacity: 0.9; text-shadow: 0 0 18px #ff90b5, 0 0 8px white; }
+      100% { opacity: 1; text-shadow: 0 0 3px pink; }
+    }
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    .typewriter-effect {
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typewriter 3s steps(40) 1s 1 normal both;
+      border-right: 3px solid #ff99bb;
+      max-width: fit-content;
+    }
+
+    /* background variation per page */
+    .page[data-theme="pink"] { background: radial-gradient(circle at 10% 20%, #a53f6c, #311322); }
+    .page[data-theme="redgold"] { background: radial-gradient(circle at 80% 10%, #b3436b, #271625); }
+    .page[data-theme="purple"] { background: radial-gradient(circle at 30% 80%, #7d4b6e, #2e1023); }
+
+    /* scroll inside pages */
+    .page::-webkit-scrollbar { width: 6px; }
+    .page::-webkit-scrollbar-track { background: #ffbfd5; border-radius: 20px; }
+    .page::-webkit-scrollbar-thumb { background: #a62e5c; border-radius: 20px; }
+  </style>
+</head>
+<body>
+<div class="story-container">
+  <!-- PAGE 0 – SPLASH (floating emojis) -->
+  <div class="page active" id="page0" data-theme="pink">
+    <div class="splash-content">
+      <div class="floating-emojis" id="splashEmojis"></div>
+      <div style="font-size:3rem; text-align:center; z-index:2; background: rgba(0,0,0,0.2); padding:1.5rem; border-radius:80px; backdrop-filter:blur(5px);">
+        <span style="font-family:'Great Vibes'; font-size:4rem; color:#ffe5f0;">💐💖</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 1 – FIRST LOCK (code: papi) -->
+  <div class="page" id="page1" data-theme="pink">
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100%;">
+      <span class="romantic-heading">💌 My love 💌</span>
+      <div class="message" style="font-size:1.5rem; margin:1rem 0; text-align:center; white-space:normal;" class="typewriter-effect">
+        I have a surprise for you...<br> But it’s locked with the key to my heart. <br> <span style="font-family:'Pacifico';">What do you call me?</span>
+      </div>
+      <input type="text" id="code1Input" class="lock-input" placeholder="type here...">
+      <button class="btn" id="submitCode1">Unlock 💖</button>
+      <div id="error1" class="error-message"></div>
+    </div>
+  </div>
+
+  <!-- PAGE 2 – FIRST MESSAGE (after papi) -->
+  <div class="page" id="page2" data-theme="pink">
+    <div class="flower-top">
+      <span>🌸</span><span>🌼</span><span>🌺</span><span>💐</span><span>🌷</span>
+    </div>
+    <div class="message">
+      <p><span class="romantic-heading">Hello my love. 💐</span></p>
+      <p class="poppins-body">You are the very first girl I have ever sent a Valentine’s gift to. I have been preparing this little corner of the internet for you for a long time, just to wish you the most beautiful Valentine's Day.</p>
+      <p class="pacifico-line">Even though there are miles of ocean and land between Kenya and Australia, you have been nothing but a blessing to me. The distance doesn't stop me from loving you—it actually makes me love you more. It proves that I choose you. I choose you every single day, across every single mile. <span class="big-emoji">✨🇰🇪❤️🇦🇺</span></p>
+    </div>
+    <button class="btn btn-next" id="nextToLock2">Next 💞</button>
+  </div>
+
+  <!-- PAGE 3 – SECOND LOCK (code: kababa) -->
+  <div class="page" id="page3" data-theme="redgold">
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100%;">
+      <span class="romantic-heading">😁🤭 one more</span>
+      <div class="message" style="font-size:1.8rem; text-align:center;">what would you call me again😁🤭</div>
+      <input type="text" id="code2Input" class="lock-input" placeholder="secret nickname...">
+      <button class="btn" id="submitCode2">Unlock 🔐</button>
+      <div id="error2" class="error-message"></div>
+    </div>
+  </div>
+
+  <!-- PAGE 4 – SECOND MESSAGE (after kababa) -->
+  <div class="page" id="page4" data-theme="redgold">
+    <div class="flower-top">
+      <span>🌹</span><span>🌻</span><span>🌺</span><span>💮</span><span>🌸</span>
+    </div>
+    <div class="message">
+      <p><span class="romantic-heading">I need you to know...</span></p>
+      <p>You have created a whole new world within me. You have been the most beautiful part of my transformation. Thank you for your support, for accepting me exactly as I am, flaws and all. Thank you for loving me, for caring for me, and for the beautiful way you are submissive to our love.</p>
+      <p class="pacifico-line">Look at us. When issues come, we don't run—we fight. Together. That is why when I look at you, I don’t just see a girlfriend. I see the future mother of my children. I see my wife. I don't date you just for the sake of it; I date you because your heart is more precious than gold. Your kindness is the most beautiful thing I have ever witnessed. It makes me never want to lose you.</p>
+      <p><span class="highlight-pink">(Okay, here comes a joke... but I’m serious 😉)</span> Part of my ultimate wish? I wish you would get off all other social media and just use one special place... a place where we can just be us, away from the world. I just want you all to myself, my love. <span class="big-emoji">🤫❤️</span></p>
+    </div>
+    <button class="btn btn-next" id="nextToLock3">Next ➡️</button>
+  </div>
+
+  <!-- PAGE 5 – THIRD LOCK (baaiby/baiby/baaaiby) -->
+  <div class="page" id="page5" data-theme="purple">
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100%;">
+      <span class="romantic-heading">💋 final lock 💋</span>
+      <div class="message" style="font-size:1.7rem; text-align:center;">One last lock, my baby. You know what to type... <br> <span style="font-family:'Pacifico';">(baaiby/baiby/baaaiby)</span></div>
+      <input type="text" id="code3Input" class="lock-input" placeholder="ba*by">
+      <button class="btn" id="submitCode3">Unlock ❤️‍🔥</button>
+      <div id="error3" class="error-message"></div>
+    </div>
+  </div>
+
+  <!-- PAGE 6 – FINAL MESSAGE + MUSIC (now redirects to YouTube) -->
+  <div class="page" id="page6" data-theme="purple">
+    <div class="flower-top">
+      <span>💐</span><span>🌷</span><span>🥀</span><span>🌹</span><span>🌸</span>
+    </div>
+    <div class="message" style="overflow-y:auto;">
+      <p><span class="romantic-heading">And now... a message about the woman who makes my heart stop. ❤️‍🔥</span></p>
+      <p>Those sexy eyes of yours? They turn me on every single time I see them. That beautiful baby face of yours makes me blush like a teenager. You confuse me with your beauty—I forget how to function when you look at me.</p>
+      <p class="pacifico-line">Your body, your soul, your vibe... you have everything I have ever wanted. You are my dream manifested.</p>
+      <p>My biggest wish? That when we get to Heaven together, we find our own private place, just made for us. Because the love you give me? I have never seen it anywhere else on this earth. You are the best girlfriend anyone could ever ask for, and I will spend my life trying to be the best boyfriend for you.</p>
+      <p><span class="highlight-gold">I pray we grow together. The enemy will try to tear us apart, but it’s about how strong we stand, back to back, fighting for this beautiful thing God gave us—this love that so many people desire but never find.</span></p>
+      <p>Stay loyal, stay truthful, stay you. My love for you will never fade. I chose you. It is you, and it will always be you. Because you, my love, are the kind of love they say comes once in a lifetime. ✨</p>
+      <p class="romantic-heading">Mommy, I love you so much. Thank you for coming into my life.</p>
+      <p style="font-size:1.8rem;">And just so you know... you’re not going anywhere. I’ve locked you inside my heart, and I dropped the key in the ocean. You’re here forever. 💖🔒🌊</p>
+    </div>
+    <!-- music button - now opens YouTube link in new tab -->
+    <div class="music-area">
+      <button class="player-button" id="playMusicBtn">
+        <i class="fas fa-heart"></i> Play our song 💕 <i class="fas fa-heart"></i>
+      </button>
+      <p style="font-size:0.9rem; margin-top:0.5rem; opacity:0.8;">(opens YouTube in a new tab)</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // current page index
+    let currentPage = 0;  // 0 = splash
+    const pages = document.querySelectorAll('.page');
+
+    function showPage(index) {
+      pages.forEach((p, i) => {
+        p.classList.toggle('active', i === index);
+      });
+      currentPage = index;
+    }
+
+    // splash screen timer (5 seconds)
+    setTimeout(() => {
+      if (currentPage === 0) {
+        showPage(1);
+      }
+    }, 5000);
+
+    // generate floating emojis for splash
+    const splashContainer = document.getElementById('splashEmojis');
+    const emojis = ['💐','❤️','🥰','😘','💋','💌','🌹','🌸','💖','💘','💝','💞','💕','🔥','✨','🇦🇺','❤️','🇰🇪'];
+    for (let i = 0; i < 35; i++) {
+      const span = document.createElement('span');
+      span.className = 'float-emoji';
+      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      span.style.left = Math.random() * 90 + '%';
+      span.style.top = Math.random() * 90 + '%';
+      span.style.animationDuration = (5 + Math.random() * 8) + 's';
+      span.style.fontSize = (1.8 + Math.random() * 2.5) + 'rem';
+      span.style.transform = `rotate(${Math.random() * 30}deg)`;
+      splashContainer.appendChild(span);
+    }
+
+    // helper to show error on specific page
+    function setError(pageId, msg) {
+      document.getElementById(pageId).textContent = msg;
+    }
+
+    // ---- CODE VERIFICATIONS ----
+    // page1 -> papi
+    document.getElementById('submitCode1').addEventListener('click', () => {
+      const input = document.getElementById('code1Input').value.trim().toLowerCase();
+      if (input === 'papi') {
+        setError('error1', '');
+        showPage(2);
+      } else {
+        setError('error1', 'Nope, try again, beautiful 💖');
+      }
+    });
+
+    // next from page2 to page3
+    document.getElementById('nextToLock2').addEventListener('click', () => {
+      showPage(3);
+    });
+
+    // page3 -> kababa
+    document.getElementById('submitCode2').addEventListener('click', () => {
+      const input = document.getElementById('code2Input').value.trim().toLowerCase();
+      if (input === 'kababa') {
+        setError('error2', '');
+        showPage(4);
+      } else {
+        setError('error2', 'that’s not it, baby 😘 try again');
+      }
+    });
+
+    // next from page4 to page5
+    document.getElementById('nextToLock3').addEventListener('click', () => {
+      showPage(5);
+    });
+
+    // page5 -> baaiby / baiby / baaaiby (case insensitive)
+    document.getElementById('submitCode3').addEventListener('click', () => {
+      const input = document.getElementById('code3Input').value.trim().toLowerCase();
+      if (input === 'baaiby' || input === 'baiby' || input === 'baaaiby') {
+        setError('error3', '');
+        showPage(6);
+      } else {
+        setError('error3', 'nope my baby, try: baaiby/baiby 😘');
+      }
+    });
+
+    // MUSIC: now opens YouTube link in new tab (redirect)
+    document.getElementById('playMusicBtn').addEventListener('click', function() {
+      window.open('https://youtu.be/V6_K2oC1gd0?si=hojG8kaQhIT2jQKl', '_blank');
+    });
+
+    // extra: also allow enter key on inputs (basic)
+    document.getElementById('code1Input').addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') document.getElementById('submitCode1').click();
+    });
+    document.getElementById('code2Input').addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') document.getElementById('submitCode2').click();
+    });
+    document.getElementById('code3Input').addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') document.getElementById('submitCode3').click();
+    });
+  })();
+</script>
+
+<!-- subtle style for extra floating on all flower tops -->
+<style>
+  /* additional love */
+  .flower-top span {
+    transition: all 0.2s;
+    cursor: default;
+    filter: drop-shadow(0 0 8px #ffafd0);
+  }
+  .message p {
+    margin-bottom: 1.4rem;
+  }
+  .btn-next {
+    width: fit-content;
+  }
+  /* make splash text extra lovely */
+  #page0 .splash-content > div {
+    background: rgba(170, 70, 120, 0.4);
+    border: 2px solid #ffcfdf;
+  }
+  .lock-input:focus {
+    border-color: #ff6f9f;
+    box-shadow: 0 0 25px #ff87b5;
+  }
+</style>
+</body>
+</html>
